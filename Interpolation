@@ -3,40 +3,33 @@ using namespace std;
 
 class Interpolation {
 private:
-    double* x_nodes;  // Массив узлов x₀, x₁, ..., xₙ (должны быть упорядочены: x₀ < x₁ < ... < xₙ)
-    double* y_nodes;  // Массив значений функции в узлах y₀, y₁, ..., yₙ
-    int n;           // Количество интервалов (количество узлов = n + 1)
+    double* x_nodes;  
+    double* y_nodes;  
+    int n;           
 
 public:
-    // Конструктор: создает интерполятор по заданным узлам
     Interpolation(double* x, double* y, int node_count) {
-        // Сохраняем данные
         n = node_count - 1;  
         x_nodes = new double[node_count];
         y_nodes = new double[node_count];
 
-        // Копируем узлы интерполяции
         for (int i = 0; i <= n; i++) {
             x_nodes[i] = x[i];
             y_nodes[i] = y[i];
         }
     }
-    // Деструктор: освобождаем память
     ~Interpolation() {
         delete[] x_nodes;
         delete[] y_nodes;
     }
-
-    // Вычисляем значение функции в точке x по формуле Ф(x) = yᵢ + (yᵢ₊₁ - yᵢ)/(xᵢ₊₁ - xᵢ) * (x - xᵢ)   
+    // Ф(x) = yᵢ + (yᵢ₊₁ - yᵢ)/(xᵢ₊₁ - xᵢ) * (x - xᵢ)   
     double interpolate(double x) {
-        // Ищем интервал [xᵢ, xᵢ₊₁], в который попадает x
         for (int i = 0; i < n; i++) {
-            // Проверяем, попадает ли x в текущий интервал [xᵢ, xᵢ₊₁]
             if (x >= x_nodes[i] && x <= x_nodes[i + 1]) {  
-                double x_i = x_nodes[i];      // xᵢ - левая граница интервала
-                double x_i1 = x_nodes[i + 1];   // xᵢ₊₁ - правая граница интервала
-                double y_i = y_nodes[i];      // yᵢ - значение в левой границе
-                double y_i1 = y_nodes[i + 1];   // yᵢ₊₁ - значение в правой границе
+                double x_i = x_nodes[i];      // xᵢ - левая граница 
+                double x_i1 = x_nodes[i + 1];   // xᵢ₊₁ - правая граница 
+                double y_i = y_nodes[i];      // yᵢ - значение в левой 
+                double y_i1 = y_nodes[i + 1];   // yᵢ₊₁ - значение в правой 
                                  
                 double result = y_i + (y_i1 - y_i) / (x_i1 - x_i) * (x - x_i);
 
@@ -46,7 +39,6 @@ public:
         return 0; 
     }
 
-    // Для вывода информации об интерполяторе
     void printInfo() {
         for (int i = 0; i <= n; i++) {
             cout << "  node " << i << ": (" << x_nodes[i] << ", " << y_nodes[i] << ")" << endl;
@@ -55,11 +47,10 @@ public:
 };
 
 int main() {
-    // ПРИМЕР 1: Линейная функция 
     cout << " EX1: lin func y = 2x + 1" << endl;
-    double x1[] = { 0.0, 1.0, 2.0, 3.0 };  // Узлы x₀, x₁, x₂, x₃
-    double y1[] = { 1.0, 3.0, 5.0, 7.0 };  // Значения в узлах y₀, y₁, y₂, y₃
-    int nodes1 = 4; // Количество узлов
+    double x1[] = { 0.0, 1.0, 2.0, 3.0 };  
+    double y1[] = { 1.0, 3.0, 5.0, 7.0 };  
+    int nodes1 = 4; 
 
     Interpolation lin_interp(x1, y1, nodes1);
     lin_interp.printInfo();
@@ -69,8 +60,7 @@ int main() {
         double y = lin_interp.interpolate(x);
         cout << "F(" << x << ") = " << y << endl;
     }
-
-    // ПРИМЕР 2: Произвольная функция
+    
     cout << "\nEX2: proizvol func" << endl;
     double x2[] = { 0.0, 2.0, 3.0, 5.0, 6.0 };
     double y2[] = { 1.0, 4.0, 2.0, 5.0, 3.0 };
