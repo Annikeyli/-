@@ -22,14 +22,14 @@ public:
         delete[] x_nodes;
         delete[] y_nodes;
     }
-    // Ф(x) = yᵢ + (yᵢ₊₁ - yᵢ)/(xᵢ₊₁ - xᵢ) * (x - xᵢ)   
+    // Ф(x) = yi + (yi+1 - yi)/(x+1 - xi) * (x - xi)   
     double interpolate(double x) {
         for (int i = 0; i < n; i++) {
             if (x >= x_nodes[i] && x <= x_nodes[i + 1]) {  
-                double x_i = x_nodes[i];      // xᵢ - левая граница 
-                double x_i1 = x_nodes[i + 1];   // xᵢ₊₁ - правая граница 
-                double y_i = y_nodes[i];      // yᵢ - значение в левой 
-                double y_i1 = y_nodes[i + 1];   // yᵢ₊₁ - значение в правой 
+                double x_i = x_nodes[i];      // xi - левая граница 
+                double x_i1 = x_nodes[i + 1];   // xi+1 - правая граница 
+                double y_i = y_nodes[i];      // yi - значение в левой 
+                double y_i1 = y_nodes[i + 1];   // yi+1 - значение в правой 
                                  
                 double result = y_i + (y_i1 - y_i) / (x_i1 - x_i) * (x - x_i);
 
@@ -47,12 +47,12 @@ public:
 };
 
 int main() {
-    cout << " EX1: lin func y = 2x + 1" << endl;
-    double x1[] = { 0.0, 1.0, 2.0, 3.0 };  
-    double y1[] = { 1.0, 3.0, 5.0, 7.0 };  
-    int nodes1 = 4; 
+    cout << " y = 2x + 1" << endl;
+    double x[] = { 0.0, 1.0, 2.0, 3.0 };  
+    double y[] = { 1.0, 3.0, 5.0, 7.0 };  
+    int nodes = 4; 
 
-    Interpolation lin_interp(x1, y1, nodes1);
+    Interpolation lin_interp(x, y, nodes);
     lin_interp.printInfo();
 
     cout << "\nresult interpolation:" << endl;    
@@ -61,19 +61,19 @@ int main() {
         cout << "F(" << x << ") = " << y << endl;
     }
     
-    cout << "\nEX2: proizvol func" << endl;
-    double x2[] = { 0.0, 2.0, 3.0, 5.0, 6.0 };
-    double y2[] = { 1.0, 4.0, 2.0, 5.0, 3.0 };
-    int nodes2 = 5;
+    //cout << "\nEX2: proizvol func" << endl;
+    //double x2[] = { 0.0, 2.0, 3.0, 5.0, 6.0 };
+    //double y2[] = { 1.0, 4.0, 2.0, 5.0, 3.0 };
+    //int nodes2 = 5;
 
-    Interpolation custom_interp(x2, y2, nodes2);
-    custom_interp.printInfo();
+    //Interpolation custom_interp(x2, y2, nodes2);
+    //custom_interp.printInfo();
 
-    cout << "\nresult interpolation:" << endl;
-    for (double x = 0.0; x <= 6.0; x += 1.0) {
-        double y = custom_interp.interpolate(x);
-        cout << "F(" << x << ") = " << y << endl;
-    }
+    //cout << "\nresult interpolation:" << endl;
+    //for (double x = 0.0; x <= 6.0; x += 1.0) {
+        //double y = custom_interp.interpolate(x);
+        //cout << "F(" << x << ") = " << y << endl;
+    //}
 
     return 0;
 }
