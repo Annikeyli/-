@@ -36,16 +36,14 @@ int main() {
     cout << " y = sin(x)" << endl;
     cout << " y' = cos(x)" << endl << endl;
 
-    // Создаем равномерную сетку узлов
-    double a = 0.0;  // начало интервала
-    double b = 3.14; // конец интервала
+    // Создаем сетку узлов
+    double a = 0.0;  // начало 
+    double b = 3.14; // конец 
     int n = 7;      // количество интервалов
-    double h = (b - a) / n; // шаг сетки
-        
-    // Создаем массивы узлов и значений функции
+    double h = (b - a) / n; // шаг 
+    
     vector<double> x_nodes(n + 1);
     vector<double> y_nodes(n + 1);
-
     for (int i = 0; i <= n; i++) {
         x_nodes[i] = a + i * h;
         y_nodes[i] = function(x_nodes[i]);
