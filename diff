@@ -14,19 +14,19 @@ double derivative(double x) {
     return cos(x);
 }
 
-// Правая: f'(x_i) ≈ (y_i+1 - y_i) / h
+// Правая: f'(x_i) ≈ (y_i+1 - y_i) / h, h = x_i+1 - x_i
 double right_d(double x_i, double x_i1, double y_i, double y_i1) {
     double h = x_i1 - x_i;
     return (y_i1 - y_i) / h;
 }
 
-// Левая: f'(x_i) ≈ (y_i - y_i-1) / h
+// Левая: f'(x_i) ≈ (y_i - y_i-1) / h, h = x_i - x_i-1
 double left_d(double x_i, double x_i_1, double y_i, double y_i_1) {
     double h = x_i - x_i_1;
     return (y_i - y_i_1) / h;
 }
 
-// Центральная: f'(x_i) ≈ (y_i+1 - y_i-1) / (2h)
+// Центральная: f'(x_i) ≈ (y_i+1 - y_i-1) / (2h), h = x_i+1 - x_i = h = x_i - x_i-1
 double central_d(double x_i_1, double x_i1, double y_i_1, double y_i1) {
     double h = x_i1 - x_i_1;
     return (y_i1 - y_i_1) / (2 * h);
