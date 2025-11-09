@@ -35,8 +35,6 @@ public:
     //double interpolate(double x) {
     //    double result = y_nodes[0]; // Начинаем с y0 
     //    double pt = 1.0;  // (x-x0)(x-x1)...(x-xn-1)
-
-    //    // Добавляем члены 
     //    for (int k = 1; k <= n; k++) {
     //        pt *= (x - x_nodes[k - 1]);
     //        result += dividedDifference(0, k) * pt;
@@ -85,4 +83,5 @@ int main() {
 
     return 0;
 }
+
 
