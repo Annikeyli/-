@@ -1,0 +1,93 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <locale.h>
+
+using namespace std;
+
+double function(double x) {
+    return sin(x);
+}
+
+// y' 
+double derivative(double x) {
+    return cos(x);
+}
+
+// Правая: f'(x_i) ≈ (y_i+1 - y_i) / h
+double right_d(double x_i, double x_i1, double y_i, double y_i1) {
+    double h = x_i1 - x_i;
+    return (y_i1 - y_i) / h;
+}
+
+// Левая: f'(x_i) ≈ (y_i - y_i-1) / h
+double left_d(double x_i, double x_i_1, double y_i, double y_i_1) {
+    double h = x_i - x_i_1;
+    return (y_i - y_i_1) / h;
+}
+
+// Центральная: f'(x_i) ≈ (y_i+1 - y_i-1) / (2h)
+double central_d(double x_i_1, double x_i1, double y_i_1, double y_i1) {
+    double h = x_i1 - x_i_1;
+    return (y_i1 - y_i_1) / (2 * h);
+}
+
+int main() {
+    cout << " y = sin(x)" << endl;
+    cout << " y' = cos(x)" << endl << endl;
+
+    // Создаем равномерную сетку узлов
+    double a = 0.0;  // начало интервала
+    double b = 3.14; // конец интервала
+    int n = 7;      // количество интервалов
+    double h = (b - a) / n; // шаг сетки
+        
+    // Создаем массивы узлов и значений функции
+    vector<double> x_nodes(n + 1);
+    vector<double> y_nodes(n + 1);
+
+    for (int i = 0; i <= n; i++) {
+        x_nodes[i] = a + i * h;
+        y_nodes[i] = function(x_nodes[i]);
+    }
+
+    cout << "================================================================" << endl;
+    cout << "  x_i     Derivative       Left        Right       Central" << endl;
+    cout << "================================================================" << endl;
+
+    // Для первого узла можно вычислить только правую разность
+    double x_i = x_nodes[0];
+    double der = derivative(x_i);
+    double right = right_d(x_nodes[0], x_nodes[1], y_nodes[0], y_nodes[1]);
+
+    cout << x_i << "           " << der << "              -          " << right << "            -" << endl;
+
+    // Для внутренних - все три разности
+    for (int i = 1; i < n; i++) {
+        x_i = x_nodes[i];
+        der = derivative(x_i);
+
+        // Левая: текущий и предыдущий узел
+        double left = left_d(x_nodes[i], x_nodes[i - 1], y_nodes[i], y_nodes[i - 1]);
+
+        // Правая: текущий и следующий узел
+        right = right_d(x_nodes[i], x_nodes[i + 1], y_nodes[i], y_nodes[i + 1]);
+
+        // Центральная: предыдущий и следующий узел
+        double central = central_d(x_nodes[i - 1], x_nodes[i + 1], y_nodes[i - 1], y_nodes[i + 1]);
+
+        cout << x_i << "    " << der << "     " << left << "      " << right << "       " << central << endl;
+    }
+
+    // Для последнего узла - только левую разность
+    x_i = x_nodes[n];
+    der = derivative(x_i);
+    double left = left_d(x_nodes[n], x_nodes[n - 1], y_nodes[n], y_nodes[n - 1]);
+
+    cout << x_i << "       " << der << "     " << left << "          -               -" << endl;
+
+
+    cout << "================================================================" << endl;
+        
+    return 0;
+}
