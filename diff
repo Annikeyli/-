@@ -14,19 +14,19 @@ double derivative(double x) {
     return cos(x);
 }
 
-// Правая: f'(x_i) ≈ (y_i+1 - y_i) / h, h = x_i+1 - x_i
+// Правая: f'(x_i) = (y_i+1 - y_i) / h, h = x_i+1 - x_i
 double right_d(double x_i, double x_i1, double y_i, double y_i1) {
     double h = x_i1 - x_i;
     return (y_i1 - y_i) / h;
 }
 
-// Левая: f'(x_i) ≈ (y_i - y_i-1) / h, h = x_i - x_i-1
+// Левая: f'(x_i) = (y_i - y_i-1) / h, h = x_i - x_i-1
 double left_d(double x_i, double x_i_1, double y_i, double y_i_1) {
     double h = x_i - x_i_1;
     return (y_i - y_i_1) / h;
 }
 
-// Центральная: f'(x_i) ≈ (y_i+1 - y_i-1) / (2h), h = x_i+1 - x_i = h = x_i - x_i-1
+// Центральная: f'(x_i) = (y_i+1 - y_i-1) / (2h), h = x_i+1 - x_i = h = x_i - x_i-1
 double central_d(double x_i_1, double x_i1, double y_i_1, double y_i1) {
     double h = x_i1 - x_i_1;
     return (y_i1 - y_i_1) / (2 * h);
@@ -53,14 +53,14 @@ int main() {
     cout << "  x_i     Derivative       Left        Right       Central" << endl;
     cout << "================================================================" << endl;
 
-    // Для первого узла можно вычислить только правую разность
+    // только правую разность
     double x_i = x_nodes[0];
     double der = derivative(x_i);
     double right = right_d(x_nodes[0], x_nodes[1], y_nodes[0], y_nodes[1]);
 
     cout << x_i << "           " << der << "              -          " << right << "            -" << endl;
 
-    // Для внутренних - все три разности
+    // все три разности
     for (int i = 1; i < n; i++) {
         x_i = x_nodes[i];
         der = derivative(x_i);
@@ -77,7 +77,7 @@ int main() {
         cout << x_i << "    " << der << "     " << left << "      " << right << "       " << central << endl;
     }
 
-    // Для последнего узла - только левую разность
+    // только левую разность
     x_i = x_nodes[n];
     der = derivative(x_i);
     double left = left_d(x_nodes[n], x_nodes[n - 1], y_nodes[n], y_nodes[n - 1]);
