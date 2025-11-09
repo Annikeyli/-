@@ -9,7 +9,7 @@ private:
 
 public:
     Interpolation(double* x, double* y, int node_count) {
-        n = node_count - 1; // Количество интервалов 
+        n = node_count - 1;  
         x_nodes = new double[node_count];
         y_nodes = new double[node_count];
         
@@ -34,14 +34,12 @@ public:
     //// Вычисление по формуле Ньютона: Pₙ(x) = y₀ + f(x₀;x₁)(x-x₀) + f(x₀;x₁;x₂)(x-x₀)(x-x₁) + ... + f(x₀;x₁;...;xₙ)(x-x₀)...(x-xₙ₋₁)
     //double interpolate(double x) {
     //    double result = y_nodes[0]; // Начинаем с y0 
-    //    double product_term = 1.0;  // (x-x0)(x-x1)...(x-xn-1)
+    //    double pt = 1.0;  // (x-x0)(x-x1)...(x-xn-1)
 
     //    // Добавляем члены 
     //    for (int k = 1; k <= n; k++) {
-    //        // Умножаем на (x - xn-1)
-    //        product_term *= (x - x_nodes[k - 1]);
-    //        // Добавляем f(x0;x1;...;xn) * (x-x0)(x-x1)...(x-xn-1)
-    //        result += dividedDifference(0, k) * product_term;
+    //        pt *= (x - x_nodes[k - 1]);
+    //        result += dividedDifference(0, k) * pt;
     //    }
     //    return result;
     //}
@@ -87,3 +85,4 @@ int main() {
 
     return 0;
 }
+
