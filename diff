@@ -69,7 +69,7 @@ int main() {
         double left = left_d(x_nodes[i], x_nodes[i - 1], y_nodes[i], y_nodes[i - 1]);
 
         // Правая: текущий и следующий узел
-        right = right_d(x_nodes[i], x_nodes[i + 1], y_nodes[i], y_nodes[i + 1]);
+        double right = right_d(x_nodes[i], x_nodes[i + 1], y_nodes[i], y_nodes[i + 1]);
 
         // Центральная: предыдущий и следующий узел
         double central = central_d(x_nodes[i - 1], x_nodes[i + 1], y_nodes[i - 1], y_nodes[i + 1]);
