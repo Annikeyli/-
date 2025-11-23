@@ -53,7 +53,7 @@ int main() {
     cout << "  x_i     Derivative       Left        Right       Central" << endl;
     cout << "================================================================" << endl;
 
-    // только правую разность
+    // для первого узла только правая разность
     double x_i = x_nodes[0];
     double der = derivative(x_i);
     double right = right_d(x_nodes[0], x_nodes[1], y_nodes[0], y_nodes[1]);
@@ -77,7 +77,7 @@ int main() {
         cout << x_i << "    " << der << "     " << left << "      " << right << "       " << central << endl;
     }
 
-    // только левую разность
+    // для последнего узла только левая разность
     x_i = x_nodes[n];
     der = derivative(x_i);
     double left = left_d(x_nodes[n], x_nodes[n - 1], y_nodes[n], y_nodes[n - 1]);
