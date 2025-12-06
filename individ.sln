@@ -53,27 +53,13 @@ public:
 };
 
 int main() {
-    cout << "\n1: y = x^3 - 2x\n";
-    double x1[] = { 0.0, 1.0, 2.0, 3.0 };
-    double y1[] = { 0.0, -1.0, 4.0, 21.0 };
+    //cout << "\n\n1:\n";
+    double x1[] = { 1.0, 5.0, 7.0, 11.0 };
+    double y1[] = { 3.0, 4.0, 6.0, 12.0 };
     int nodes1 = 4;
 
     Interpolation interp1(x1, y1, nodes1);
-    interp1.printInfo();
-
-    /*cout << "\nInterpolation results:" << endl;
-    for (double x = 0.0; x <= 3.0; x += 0.5) {
-        double y = interp1.interpolate(x);
-        cout << "  P(" << x << ") = " << y << endl;
-    }*/
-        
-    cout << "\n\n2:\n";
-    double x2[] = { 1.0, 5.0, 7.0, 11.0 };
-    double y2[] = { 3.0, 4.0, 6.0, 12.0 };
-    int nodes2 = 4;
-
-    Interpolation interp2(x2, y2, nodes2);
-    interp2.printInfo();
+    //interp2.printInfo();
 
     /*cout << "\nInterpolation results:" << endl;
     for (double x = 1.0; x <= 11.0; x += 1.0) {
@@ -81,16 +67,12 @@ int main() {
         cout << "  P(" << x << ") = " << y << endl;
     }*/
 
-    return 0;
-}
+    //cout << "\n2: y = x^3 - 2x\n";
+    double x2[] = { 0.0, 1.0, 2.0, 3.0 };
+    double y2[] = { 0.0, -1.0, 4.0, 21.0 };
+    int nodes2 = 4;
 
-int main() {
-    //cout << "\n1: y = x^3 - 2x\n";
-    double x1[] = { 0.0, 1.0, 2.0, 3.0 };
-    double y1[] = { 0.0, -1.0, 4.0, 21.0 };
-    int nodes1 = 4;
-
-    Interpolation interp1(x1, y1, nodes1);
+    Interpolation interp2(x2, y2, nodes2);
     //interp1.printInfo();
 
     /*double y = interp1.interpolate(3.0);
@@ -103,23 +85,8 @@ int main() {
         double y = interp1.interpolate(x);
         cout << "  P(" << x << ") = " << y << endl;
     }*/
-
-    //cout << "\n\n2:\n";
-    double x2[] = { 1.0, 5.0, 7.0, 11.0 };
-    double y2[] = { 3.0, 4.0, 6.0, 12.0 };
-    int nodes2 = 4;
-
-    Interpolation interp2(x2, y2, nodes2);
-    //interp2.printInfo();
-
-    /*cout << "\nInterpolation results:" << endl;
-    for (double x = 1.0; x <= 11.0; x += 1.0) {
-        double y = interp2.interpolate(x);
-        cout << "  P(" << x << ") = " << y << endl;
-    }*/
-
-
     
+
     int i;
     double x;
     cout << "Choose function:" << endl;
@@ -137,11 +104,12 @@ int main() {
         double y = interp1.interpolate(x);
         cout << "P(" << x << ") = " << y << endl;
     }
-    if(i == 2) {
+    if (i == 2) {
         double y = interp2.interpolate(x);
         cout << "P(" << x << ") = " << y << endl;
     }
-    
+
     return 0;
 }
+
 
