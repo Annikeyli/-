@@ -1,0 +1,140 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <locale.h>
+
+using namespace std;
+
+const double PI = 3.14159265358979323846;
+
+const double t1 = -0.77460;
+const double t2 = 0; 
+const double t3 = 0.77460;
+const double C1 = 5.0 / 9.0;  
+const double C2 = 8.0 / 9.0;  
+const double C3 = C1;
+
+// Первый интеграл 
+double exact_integral1() {
+    // 12x^5 dx = 12 * (x^6/6) = 2x^6
+    
+    // F(3) = 2 * 3^6 = 2 * 729 = 1458
+    double F3 = 2.0 * pow(3.0, 6);//верхний предел
+
+    // F(-1) = 2 * (-1)^6 = 2 * 1 = 2
+    double F_minus1 = 2.0 * pow(-1.0, 6);//нижний предел
+        
+    return F3 - F_minus1;  // 1458 - 2 = 1456
+}
+
+// Второй интеграл 
+double exact_integral2() {
+    // x^2 sin(x) dx = 2x·sin(x) - (x^2 - 2)·cos(x)
+
+    double x_upper = PI / 2.0;// верхний предел
+    double sin_upper = sin(x_upper);  // sin(π/2) = 1
+    double cos_upper = cos(x_upper);  // cos(π/2) = 0
+    // F(π/2) = 2*(π/2)*1 - ((π/2)^2 - 2)*0 = π
+    double F_upper = 2.0 * x_upper * sin_upper - (x_upper * x_upper - 2.0) * cos_upper;
+        
+    double x_lower = 0.0;// нижний предел
+    double sin_lower = sin(x_lower);  // sin(0) = 0
+    double cos_lower = cos(x_lower);  // cos(0) = 1
+    // F(0) = 2*0*0 - (0^2 - 2)*1 = 0 - (-2) = 2
+    double F_lower = 2.0 * x_lower * sin_lower - (x_lower * x_lower - 2.0) * cos_lower;
+        
+    return F_upper - F_lower;  // π - 2
+}
+
+// это I_h Вычисления интеграла методом Гаусса (n=3)  
+double gauss_integral(double a, double b, double (*f)(double)) {
+    double alpha = (b - a) / 2.0;
+    double beta = (a + b) / 2.0;
+
+    double sum = 0.0;
+    // Точка t1 = -0.77460
+    double x1 = alpha * t1 + beta;
+    sum += C1 * f(x1);
+
+    // Точка t2 = 0
+    double x2 = alpha * t2 + beta;
+    sum += C2 * f(x2);
+
+    // Точка t3 = 0.77460
+    double x3 = alpha * t3 + beta;
+    sum += C3 * f(x3);
+
+    return alpha * sum;
+}
+
+// Первая подынтегральная функция: f(x) = 12x^5
+double f1(double x) {
+    return 12.0 * pow(x, 5);
+}
+
+// Вторая подынтегральная функция: f(x) = x^2 * sin(x)
+double f2(double x) {
+    return x * x * sin(x);
+}
+
+// Правило Рунге  
+double runge_error(double I_h, double I_h2, int p) {
+    // p - порядок метода (для Гаусса n=3: 2n-1 = 5)
+    return fabs(I_h - I_h2) / (pow(2, p) - 1);
+}
+
+// это I_h2 у интеграла1 теперь границы а->(a+b)/2, а у второго (a+b)/2->b 
+double gauss_integral_double(double a, double b, double (*f)(double)) {
+    double mid = (a + b) / 2.0;
+    return gauss_integral(a, mid, f) + gauss_integral(mid, b, f);
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    
+    // ПЕРВЫЙ ИНТЕГРАЛ (12x^5 dx)
+    cout << "=== Первый интеграл ===" << endl;
+    double a1 = -1.0, b1 = 3.0;
+
+    // точное значение
+    double exact1 = exact_integral1();
+    cout << " Точное значение " << exact1 << endl;
+        
+    // Вычисление методом Гаусса 
+    double I1_gauss = gauss_integral(a1, b1, f1);
+    cout << " Метод Гаусса: " << I1_gauss << endl;
+    
+    // Оценка погрешности по правилу Рунге
+    double I1_double = gauss_integral_double(a1, b1, f1);
+    double runge_error1 = runge_error(I1_gauss, I1_double, 5);
+    cout << " По Рунге: " << runge_error1 << endl;
+    cout << endl;
+
+    // ВТОРОЙ ИНТЕГРАЛ (x^2 sin(x) dx)
+    cout << "=== Второй интеграл ===" << endl;
+    double a2 = 0.0, b2 = PI / 2.0;
+
+    // точное значение 
+    double exact2 = exact_integral2();
+    cout << " Точное значение " << exact2 << endl;
+
+    // Вычисление методом Гаусса
+    double I2_gauss = gauss_integral(a2, b2, f2);
+    cout << " Метод Гаусса: " << I2_gauss << endl;
+    
+    // Оценка погрешности по правилу Рунге
+    double I2_double = gauss_integral_double(a2, b2, f2);
+    double runge_error2 = runge_error(I2_gauss, I2_double, 5);
+    cout << " По Рунге: " << runge_error2 << endl;
+
+    // Сравнение результатов
+    cout << endl << "=== Сравнение результатов ===" << endl;
+    cout << "     Первый интеграл" << endl;
+    cout << " Точное значение: " << exact1 << endl;
+    cout << " По методу Гаусса: " << I1_gauss << endl;
+    cout << "     Второй интеграл" << endl;
+    cout << " Точное значение: " << exact2 << endl;
+    cout << " По методу Гаусса: " << I2_gauss << endl;
+
+    return 0;
+}
