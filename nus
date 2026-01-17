@@ -1,0 +1,129 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <locale.h>
+using namespace std;
+
+//f(x) = 2x^2 - 1/(1+x) - 12
+double f(double x) {
+    return 2 * x * x - 1.0 / (1.0 + x) - 12.0;
+}
+
+//f1(x) = 4x + 1/(1+x)^2
+double df(double x) {
+    return 4.0 * x + 1.0 / ((1.0 + x) * (1.0 + x));
+}
+
+//f2(x) = 4 - 2/(1+x)^3
+double d2f(double x) {
+    return 4.0 - 2.0 / ((1.0 + x) * (1.0 + x) * (1.0 + x));
+}
+
+// Функция для минимума |f1(x)| на отр [a,b]
+double find_min_derivative(double a, double b) {
+    double min_val = fabs(df(a));
+    if (fabs(df(b)) < min_val) {
+        min_val = fabs(df(b));
+    }
+    return min_val;
+}
+
+int main() {
+    setlocale(LC_ALL, "Rus");
+     
+    double a = 2.0;  
+    double b = 4.0;  
+    double epsilon = 1e-6;  
+    double x0;
+
+    cout << "Уравнение 2x^2 - 1/(1+x) - 12 = 0" << endl;
+    cout << "на отрезке [" << a << ", "<< b << "] с погрешностью " << epsilon << endl;
+    cout << endl;
+
+    // Проверка возможности применения метода
+    cout << "f(x) = 2x^2 - 1/(1+x) - 12, a = " << a << ", b = " << b << endl;
+    cout << "f(a) = " << f(a) << ", f(b) = " << f(b) << endl;
+    double prz = f(a) * f(b);
+
+    if (prz >= 0) {
+        cout << "f(a)f(b) = " << prz << " >= 0. Метод нельзя применить" << endl;
+        return 1;
+    }
+    cout << "f(a)f(b) = " << prz << " < 0. Метод можно применять" << endl;
+    cout << endl;
+
+    // m = min|f1(x)| на [a,b]
+    double m = find_min_derivative(a, b);
+    cout << "Вычислим m: m = " << m << endl;
+    cout << endl;
+
+    cout << "Выберем начальное приближение x0," << endl;
+    cout << "чтобы выполнялось f(x0)f2(x0) > 0" << endl;
+    cout << endl;
+
+    // Сначала проверяем концы отрезка [a,b]
+    cout << "Проверим точку a = " << a << ":" << endl;
+    cout << "f(a) = " << f(a) << ", f2(a) = " << d2f(a);
+    double pr_a = f(a) * d2f(a);
+    cout << ", f(a)f2(a) = " << pr_a;
+
+    if (pr_a > 0) {
+        cout << " > 0. Условие выполнено" << endl;
+        x0 = a;
+    }
+    else {
+        cout << " < 0. Условие не выполнено" << endl;
+
+        cout << "Проверим точку b = " << b << ":" << endl;
+        cout << "f(b) = " << f(b) << ", f2(b) = " << d2f(b);
+        double pr_b = f(b) * d2f(b);
+        cout << ", f(b)f2(b) = " << pr_b;
+
+        if (pr_b > 0) {
+            cout << " > 0. Условие выполнено" << endl;
+            x0 = b;
+        }
+        /*else {
+            cout << " < 0. Условие не выполнено. Берем середину отрезка" << endl;
+            x0 = (a + b) / 2.0;
+        }*/
+    }
+
+    cout << "Начальное приближение: x0 = " << x0 << endl;
+    cout << endl;
+
+    // Таблица 
+    double me = m * epsilon;
+    cout << "Формула: x_{n+1} = x_n - f(x_n)/f1(x_n)," << endl;
+    cout << " пока не выполнится |f(x_n)| <= m * epsilon" << endl;
+    cout << "m * epsilon = " << me << endl;
+    cout << endl;
+        
+    cout << setw(3) << "n" << setw(12) << "x_n" << setw(15) << "f(x_n)" << endl;
+    cout << "-------------------------------" << endl;
+
+    double x = x0;
+    int n = 0;
+    const int max_iter = 100;
+
+    // Вывод начального приближения
+    cout << setw(3) << n << setw(12) << x << setw(15) << f(x) << endl;
+
+    while (fabs(f(x)) > me && n < max_iter) {
+        //x_{n+1} = x_n - f(x_n)/f1(x_n)
+        x = x - f(x) / df(x);
+        n++;
+
+        cout << setw(3) << n << setw(12) << x << setw(15) << f(x) << endl;        
+    }
+
+    cout << endl;
+    if (fabs(f(x)) <= me) {
+        cout << "x* = x_" << n << " = " << x << endl;
+    }
+    else if (n >= max_iter) {
+        cout << "Достигнуто максимальное количество итераций" << endl;
+    }
+
+    return 0;
+}
