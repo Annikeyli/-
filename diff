@@ -34,7 +34,7 @@ double central_d(double x_i_1, double x_i1, double y_i_1, double y_i1) {
 
 int main() {
     cout << " y = sin(x)" << endl;
-    cout << " y' = cos(x)" << endl << endl;
+    cout << " y1 = cos(x)" << endl << endl;
 
     // Cетку узлов
     double a = 0.0;  // начало 
