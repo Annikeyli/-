@@ -48,19 +48,17 @@ double exact_integral2() {
 
 // (это I_h) метод Гаусса 
 double gauss_integral(double a, double b, double (*f)(double)) {
+//sum = Cn * f(xn), xn = ((b - a) / 2.0)*tn + (a + b) / 2.0
     double alpha = (b - a) / 2.0;
     double beta = (a + b) / 2.0;
-
     double sum = 0.0;
-    // t1 = -0.77460
+    
     double x1 = alpha * t1 + beta;
     sum += C1 * f(x1);
 
-    // t2 = 0
     double x2 = alpha * t2 + beta;
     sum += C2 * f(x2);
 
-    // t3 = 0.77460
     double x3 = alpha * t3 + beta;
     sum += C3 * f(x3);
 
@@ -79,8 +77,7 @@ double f2(double x) {
 
 // Правило Рунге  
 double runge_error(double I_h, double I_h2, int p) {
-    // p - порядок метода (для Гаусса n=3: 2n-1 = 5)
-    return fabs(I_h - I_h2) / (pow(2, p) - 1);
+    return fabs(I_h - I_h2) / (pow(2, p) - 1);// p = 2n-1 = 5
 }
 
 // (это I_h2) у интеграла теперь границы а->(a+b)/2, а у второго (a+b)/2->b 
