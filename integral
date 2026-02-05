@@ -8,23 +8,23 @@ using namespace std;
 const double PI = 3.14159265358979323846;
 
 const double t1 = -0.77460;
-const double t2 = 0; 
+const double t2 = 0;
 const double t3 = 0.77460;
-const double C1 = 5.0 / 9.0;  
-const double C2 = 8.0 / 9.0;  
+const double C1 = 5.0 / 9.0;
+const double C2 = 8.0 / 9.0;
 const double C3 = C1;
 
 // Первый интеграл 
 double exact_integral1() {
     // 12x^5 dx = 12 * (x^6/6) = 2x^6
-    
-    // F(3) = 2 * 3^6 = 2 * 729 = 1458
+
+    // F(3) = 2 * 3^6 = 2 * 729 
     double F3 = 2.0 * pow(3.0, 6); //верхний предел
 
-    // F(-1) = 2 * (-1)^6 = 2 * 1 = 2
+    // F(-1) = 2 * (-1)^6 = 2 * 1 
     double F_minus1 = 2.0 * pow(-1.0, 6); //нижний предел
-        
-    return F3 - F_minus1;  // 1458 - 2 = 1456
+
+    return F3 - F_minus1;  
 }
 
 // Второй интеграл 
@@ -34,21 +34,21 @@ double exact_integral2() {
     double x_upper = PI / 2.0; // верхний предел
     double sin_upper = sin(x_upper);  // 1
     double cos_upper = cos(x_upper);  // 0
-    // F(p/2) = 2*(p/2)*1 - ((p/2)^2 - 2)*0 = p
+    // F(p/2) = 2*(p/2)*1 - ((p/2)^2 - 2)*0 
     double F_upper = 2.0 * x_upper;
-        
+
     double x_lower = 0.0; // нижний предел
     double sin_lower = sin(x_lower);  // 0
     double cos_lower = cos(x_lower);  // 1
-    // F(0) = 2*0*0 - (0^2 - 2)*1 = 0 - (-2) = 2
-    double F_lower = - (- 2.0);
-        
-    return F_upper - F_lower;  // π - 2
+    // F(0) = 2*0*0 - (0^2 - 2)*1 = 0 - (-2)
+    double F_lower = -(-2.0);
+
+    return F_upper - F_lower;  
 }
 
 // (это I_h) метод Гаусса 
 double gauss_integral(double a, double b, double (*f)(double)) {
-//sum = Cn * f(xn), xn = ((b - a) / 2.0)*tn + (a + b) / 2.0
+    //sum = Cn * f(xn), xn = ((b - a) / 2.0)*tn + (a + b) / 2.0
     double alpha = (b - a) / 2.0;
     double beta = (a + b) / 2.0;
     double sum = 0.0;
@@ -77,7 +77,8 @@ double f2(double x) {
 
 // Правило Рунге  
 double runge_error(double I_h, double I_h2, int p) {
-    return fabs(I_h - I_h2) / (pow(2, p) - 1);// p = 2n-1 = 5
+    // p - порядок метода (для Гаусса n=3: 2n-1 = 5)
+    return fabs(I_h - I_h2) / (pow(2, p) - 1);
 }
 
 // (это I_h2) у интеграла теперь границы а->(a+b)/2, а у второго (a+b)/2->b 
@@ -88,17 +89,17 @@ double gauss_integral_double(double a, double b, double (*f)(double)) {
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    
+
     // Первый интеграл(12x^5 dx)
     cout << "=== Первый интеграл ===" << endl;
     double a1 = -1.0, b1 = 3.0;
 
     double exact1 = exact_integral1();
     cout << " Точное значение " << exact1 << endl;
-     
+
     double I1_gauss = gauss_integral(a1, b1, f1);
     cout << " Метод Гаусса: " << I1_gauss << endl;
-    
+
     double I1_double = gauss_integral_double(a1, b1, f1);
     double runge_error1 = runge_error(I1_gauss, I1_double, 5);
     cout << " По Рунге: " << runge_error1 << endl;
@@ -113,7 +114,7 @@ int main() {
 
     double I2_gauss = gauss_integral(a2, b2, f2);
     cout << " Метод Гаусса: " << I2_gauss << endl;
-    
+
     double I2_double = gauss_integral_double(a2, b2, f2);
     double runge_error2 = runge_error(I2_gauss, I2_double, 5);
     cout << " По Рунге: " << runge_error2 << endl;
