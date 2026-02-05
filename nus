@@ -19,7 +19,7 @@ double d2f(double x) {
     return 4.0 - 2.0 / ((1.0 + x) * (1.0 + x) * (1.0 + x));
 }
 
-// минимум |f1(x)| на [a,b]
+// Функция для минимума |f1(x)| на отр [a,b]
 double find_min_derivative(double a, double b) {
     double min_val = fabs(df(a));
     if (fabs(df(b)) < min_val) {
@@ -40,6 +40,7 @@ int main() {
     cout << "на отрезке [" << a << ", "<< b << "] с погрешностью " << epsilon << endl;
     cout << endl;
 
+    // Проверка возможности применения метода
     cout << "f(x) = 2x^2 - 1/(1+x) - 12, a = " << a << ", b = " << b << endl;
     cout << "f(a) = " << f(a) << ", f(b) = " << f(b) << endl;
     double prz = f(a) * f(b);
@@ -60,6 +61,7 @@ int main() {
     cout << "чтобы выполнялось f(x0)f2(x0) > 0" << endl;
     cout << endl;
 
+    // Сначала проверяем концы отрезка [a,b]
     cout << "Проверим точку a = " << a << ":" << endl;
     cout << "f(a) = " << f(a) << ", f2(a) = " << d2f(a);
     double pr_a = f(a) * d2f(a);
@@ -90,6 +92,7 @@ int main() {
     cout << "Начальное приближение: x0 = " << x0 << endl;
     cout << endl;
 
+    // Таблица 
     double me = m * epsilon;
     cout << "Формула: x_{n+1} = x_n - f(x_n)/f1(x_n)," << endl;
     cout << " пока не выполнится |f(x_n)| <= m * epsilon" << endl;
@@ -103,14 +106,26 @@ int main() {
     int n = 0;
     const int max_iter = 100;
 
+    // Вывод начального приближения
     cout << setw(3) << n << setw(12) << x << setw(15) << f(x) << endl;
 
     while (fabs(f(x)) > me && n < max_iter) {
-        //x_{n+1} = x_n - f(x_n)/f1(x_n)
+        //// Проверка, что производная не равна нулю
+        //if (fabs(df(x)) < 1e-15) {
+        //    cout << "Производная равна нулю. Метод не может быть продолжен" << endl;
+        //    break;
+        //}
+
         x = x - f(x) / df(x);
         n++;
 
-        cout << setw(3) << n << setw(12) << x << setw(15) << f(x) << endl;        
+        cout << setw(3) << n << setw(12) << x << setw(15) << f(x) << endl;
+
+        //// Проверка на расходимость
+        //if (x < a || x > b) {
+        //    cout << "Итерация вышла за пределы отрезка. Метод расходится" << endl;
+        //    break;
+        //}
     }
 
     cout << endl;
@@ -123,3 +138,4 @@ int main() {
 
     return 0;
 }
+
